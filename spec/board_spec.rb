@@ -1,4 +1,5 @@
 require_relative '../lib/board.rb'
+require_relative '../lib/game.rb'
 
 describe Board do
     #initialize board with as a hash for each column?
@@ -13,7 +14,13 @@ describe Board do
 
     #method to check if there are four in a row"
     describe '#game_over?' do
-        
+        subject(:board_win) { described_class.new}
+
+        context 'when empty board is initialized' do
+            it 'returns false' do
+                expect(board_win.game_over?).to be false
+            end
+        end        
     end 
     
     #method to check if board is full
