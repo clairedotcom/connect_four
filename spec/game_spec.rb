@@ -1,11 +1,31 @@
 require_relative '../lib/game.rb'
 
 describe Game do
-    #initialize game with two players and a board
+    describe '#initialize' do
+        #test not needed, just creating instance variables
+    end
     
-    #randomly choose which player goes first
-    describe '#select_first_player' do
+    describe '#play' do
+        #public script method.
+        #test the methods it calls but not #play_game itself
+    end    
+    
+    describe '#set_first_player' do
+        subject(:game_first_player) { described_class.new}
 
+        context 'when user chooses to go first' do
+            it 'updates current player to user' do
+                user = instance_variable_get(:@user)
+                expect { game_first_player.set_first_player}.to change {game_first_player.instance_variable_get(:@current_player)}.to(user)
+            end
+        end
+
+        context 'when the user chooses not to go first' do
+            it 'updates current player to computer' do
+                computer = instance_variable_get(:@computer)
+                expect { game_first_player.set_first_player}.to change {game_first_player.instance_variable_get(:@current_player)}..to(computer)
+            end
+        end
     end
 
     #get move from user and check that it's a number
@@ -26,7 +46,7 @@ describe Game do
             let(:game_update) { described_class.new}
 
             before do
-                allow(game_update).to receive(:get_move).with(3)
+                allow(game_update).to receive(:gets).with(3)
             end
             
             it 'sends value to board class' do
