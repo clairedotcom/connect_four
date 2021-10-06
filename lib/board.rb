@@ -3,7 +3,7 @@ class Board
 
     end 
     
-    def update_board
+    def update_board(move)
 
     end    
 end    

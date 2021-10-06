@@ -15,13 +15,36 @@ class Game
     end
 
     def set_first_player
-
+        #@current_player = @user if user_first?
     end
+
+    def user_first?
+        #method asks user if they want to go first
+        #validates input
+        #returns true if answer is 'y'
+    end    
     
     def turn
-
+        #user_move if user current
+        #computer_move if computer is current player
+        #update board
+        #display board
+        #switches players
     end
     
+    def user_move
+        #gets move from players
+        #validates input
+    end
+    
+    def computer_move
+        #generates random number 
+    end
+    
+    def switch_players
+        #update @current_player
+    end    
+
     def game_over?
 
     end    
