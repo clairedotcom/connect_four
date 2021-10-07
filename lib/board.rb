@@ -5,5 +5,9 @@ class Board
     
     def update_board(move)
 
+    end
+    
+    def game_over?
+
     end    
 end    

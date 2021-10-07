@@ -41,11 +41,5 @@ describe Board do
                 expect(not_full_board.board_full?).to be false
             end
         end
-    end
-
-    #method to check if a move is valid
-    #(square is available and it's on the board)
-    describe '#valid_move?' do
-
-    end    
+    end   
 end

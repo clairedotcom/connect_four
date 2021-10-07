@@ -40,14 +40,14 @@ class Game
     def computer_move
         #generates random number 
     end
+
+    def add_move
+        #updates board with a move (user or computer)
+    end    
     
     def switch_players
         #update @current_player
-    end    
-
-    def game_over?
-
-    end    
+    end   
     
     private
 

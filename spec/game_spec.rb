@@ -118,14 +118,25 @@ describe Game do
     end
 
     describe '#computer_move' do
-
+        subject(:game_computer) { described_class.new}
+        
+        context 'when called' do
+            it 'returns a number greater than 0' do
+                expect(game_computer.computer_move).to be > 0
+            end
+        end
+        
+        context 'when called' do
+            it 'returns a number less than 8' do
+                expect(game_computer.computer_move).to be < 8
+            end
+        end
     end    
 
-    # send signal to board to update
     describe '#add_move' do
         context 'when the a move has been selected' do
             let(:board_update) { instance_double(Board)}
-            let(:game_update) { described_class.new}
+            subject(:game_update) { described_class.new}
 
             before do
                 allow(game_update).to receive(:gets).with(3)
@@ -139,6 +150,30 @@ describe Game do
     end    
     
     describe '#switch_players' do
+        subject(:game_switch) { described_class.new}
+        
+        context 'when the current player is the user' do
+            before do
+                game_switch.instance_variable_set(:@current_player, "X")
+            end
 
+            it 'changes current player to the computer' do
+                computer = "O"
+                game_switch.switch_players
+                expect(game_switch.current_player).to eq(computer)
+            end
+        end
+
+        context 'when the current player is the computer' do
+            before do
+                game_switch.instance_variable_set(:@current_player, "O")
+            end
+            
+            it 'changes current player to the user' do
+                user = "X"
+                game_switch.switch_players
+                expect(game_switch.current_player.to eq(user))
+            end
+        end        
     end
 end
