@@ -59,7 +59,8 @@ describe Game do
             
             it 'prints an error message' do
                 error_message = "Invalid input. Please enter y or n."
-                expect(game_first.user_first?).to receive(:puts).with(error_message)
+                expect(game_first).to receive(:puts).with(error_message)
+                game_first.user_first?
             end
         end
         
@@ -77,7 +78,43 @@ describe Game do
     end    
     
     describe '#user_move' do
+        subject(:game_input) { described_class.new}
 
+        context 'when the user enters a number between 1 and 7' do
+            it 'returns the number' do
+                user_input = "3"
+                verified_output = game_input.user_move
+                expect(verified_output).to eq(user_input)
+            end    
+        end
+
+        context 'when the user enters an invalid input once' do
+            before do
+                letter = "r"
+                allow(game_input).to receive(:gets).and_return(letter)
+            end
+            
+            it 'returns an error message' do
+                error_message = "Invalid input. Please enter a number between 1 and 7: "
+                expect(game_input).to receive(:puts).with(error_message).once
+                game_input.user_move
+            end
+        end 
+        
+        context 'when the user enters invalid input twice' do
+            before do
+                invalid_char = "!"
+                invalid_letter = "n"
+                allow(game_input).to receive(:gets).and_return(invalid_char, invalid_letter)
+            end
+            
+            
+            it 'returns an error message once' do
+                error_message = "Invalid input. Please enter a number between 1 and 7: "
+                expect(game_input).to receive(:puts).with(error_message).twice
+                game_input.user_move
+            end
+        end
     end
 
     describe '#computer_move' do
