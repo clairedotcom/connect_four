@@ -1,10 +1,11 @@
 require_relative './board.rb'
+require_relative './player.rb'
 
 class Game
     def initialize
         @board = Board.new
-        @user = "X"
-        @computer = "O"
+        @user = Player.new(user, "X")
+        @computer = Player.new(computer, "O")
         @current_player = nil
     end
     
