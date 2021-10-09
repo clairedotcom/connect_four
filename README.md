@@ -1,6 +1,6 @@
 # Connect Four
 
-From [The Odin Project's] (https://www.theodinproject.com/) Full Stack Ruby on Rails course.
+From [The Odin Project's](https://www.theodinproject.com/) Full Stack Ruby on Rails course.
 
 ## The Assignment
 

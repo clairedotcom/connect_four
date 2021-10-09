@@ -1,9 +1,9 @@
 class Board
     def initialize
-
+        @board = Hash.new
     end 
     
-    def update_board(move)
+    def update_board(move, marker)
 
     end
     
