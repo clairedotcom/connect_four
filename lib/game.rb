@@ -4,50 +4,59 @@ require_relative './player.rb'
 class Game
     def initialize
         @board = Board.new
-        @user = Player.new(user, "X")
-        @computer = Player.new(computer, "O")
+        @user = Player.new("user", "X")
+        @computer = Player.new("computer", "O")
         @current_player = nil
     end
     
     def play
         intro
         set_first_player
-        turn until game_over?
+        #turn until game_over?
     end
 
     def set_first_player
-        #@current_player = @user if user_first?
+        return @current_player = @user if user_first?
+        @current_player = @computer
     end
 
     def user_first?
-        #method asks user if they want to go first
-        #validates input
-        #returns true if answer is 'y'
+        loop do
+            input = gets.chomp
+            return true if input == 'y'
+            return false if input == 'n'
+
+            puts "Invalid input. Please enter y or n."
+        end
     end    
     
     def turn
-        #user_move if user current
-        #computer_move if computer is current player
-        #update board
-        #display board
-        #switches players
+        move = user_move if @current_player == @user
+        move = computer_move if @current_player == @computer
+        add_move(move)
+        @board.display_board
+        switch_players
     end
     
     def user_move
-        #gets move from players
-        #validates input
+        loop do
+            input = gets.chomp
+            return input if input.to_i < 8 && input.to_i > 0
+
+            puts "Invalid input. Please enter a number between 1 and 7: "
+        end
     end
     
     def computer_move
-        #generates random number 
+        rand(1..7)
     end
 
-    def add_move
-        #updates board with a move (user or computer)
+    def add_move(move)
+        @board.update_board(move, @current_player.marker)
     end    
     
     def switch_players
-        #update @current_player
+        @current_player == @user ? @current_player = @computer : @current_player = @user
     end   
     
     private

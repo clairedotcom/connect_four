@@ -1,4 +1,6 @@
 require_relative '../lib/game.rb'
+require_relative '../lib/player.rb'
+require_relative '../lib/board.rb'
 
 describe Game do
     describe '#initialize' do
@@ -19,7 +21,7 @@ describe Game do
             end
 
             it 'updates current player to user' do
-                user = instance_variable_get(:@user)
+                user = game_first_player.instance_variable_get(:@user)
                 expect { game_first_player.set_first_player}.to change {game_first_player.instance_variable_get(:@current_player)}.to(user)
             end
         end
@@ -30,7 +32,7 @@ describe Game do
             end
 
             it 'updates current player to computer' do
-                computer = instance_variable_get(:@computer)
+                computer = game_first_player.instance_variable_get(:@computer)
                 expect { game_first_player.set_first_player}.to change {game_first_player.instance_variable_get(:@current_player)}.to(computer)
             end
         end
@@ -53,13 +55,14 @@ describe Game do
 
         context 'when the user enters invalid input' do
             before do
-                invalid_input = 3
-                allow(game_first).to receive(:gets).and_return(invalid_input)
+                invalid_input = "3"
+                valid_input = "y"
+                allow(game_first).to receive(:gets).and_return(invalid_input, valid_input)
             end
             
             it 'prints an error message' do
                 error_message = "Invalid input. Please enter y or n."
-                expect(game_first).to receive(:puts).with(error_message)
+                expect(game_first).to receive(:puts).with(error_message).once
                 game_first.user_first?
             end
         end
@@ -81,17 +84,22 @@ describe Game do
         subject(:game_input) { described_class.new}
 
         context 'when the user enters a number between 1 and 7' do
+            before do
+                output = "3"
+                allow(game_input).to receive(:gets).and_return(output)
+            end
+
             it 'returns the number' do
                 user_input = "3"
-                verified_output = game_input.user_move
-                expect(verified_output).to eq(user_input)
+                expect(game_input.user_move).to eq(user_input)
             end    
         end
 
         context 'when the user enters an invalid input once' do
             before do
                 letter = "r"
-                allow(game_input).to receive(:gets).and_return(letter)
+                valid_input = "5"
+                allow(game_input).to receive(:gets).and_return(letter, valid_input)
             end
             
             it 'returns an error message' do
@@ -105,7 +113,8 @@ describe Game do
             before do
                 invalid_char = "!"
                 invalid_letter = "n"
-                allow(game_input).to receive(:gets).and_return(invalid_char, invalid_letter)
+                valid_number = "7"
+                allow(game_input).to receive(:gets).and_return(invalid_char, invalid_letter, valid_number)
             end
             
             
@@ -135,16 +144,18 @@ describe Game do
 
     describe '#add_move' do
         context 'when the a move has been selected' do
-            let(:board_update) { instance_double(Board)}
             subject(:game_update) { described_class.new}
 
             before do
-                allow(game_update).to receive(:gets).with(3)
-            end
+                game_update.instance_variable_set(:@current_player, game_update.instance_variable_get(:@user))
+            end    
             
             it 'sends value to board class' do
-                expect(board_update).to receive(:update_board).with(3)
-                game_update.add_move
+                move = "3"
+                marker = "X"
+                board_update = game_update.instance_variable_get(:@board)
+                expect(board_update).to receive(:update_board).with(move, marker)
+                game_update.add_move(move)
             end    
         end
     end    
@@ -154,25 +165,26 @@ describe Game do
         
         context 'when the current player is the user' do
             before do
-                game_switch.instance_variable_set(:@current_player, "X")
+                game_switch.instance_variable_set(:@current_player, game_switch.instance_variable_get(:@user))
             end
 
             it 'changes current player to the computer' do
-                computer = "O"
+                computer = game_switch.instance_variable_get(:@computer)
                 game_switch.switch_players
-                expect(game_switch.current_player).to eq(computer)
+                expect(game_switch.instance_variable_get(:@current_player)).to eq(computer)
+                
             end
         end
 
         context 'when the current player is the computer' do
             before do
-                game_switch.instance_variable_set(:@current_player, "O")
+                game_switch.instance_variable_set(:@current_player, game_switch.instance_variable_get(:@computer))
             end
             
             it 'changes current player to the user' do
-                user = "X"
+                user = game_switch.instance_variable_get(:@user)
                 game_switch.switch_players
-                expect(game_switch.current_player.to eq(user))
+                expect(game_switch.instance_variable_get(:@current_player)).to eq(user)
             end
         end        
     end
