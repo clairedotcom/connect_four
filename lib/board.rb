@@ -17,9 +17,26 @@ class Board
     end
     
     def game_over?
+        true if column_win? || row_win? || diagonal_win?
+    end
+
+    def column_win?
+        @board.each do |column|
+            return true if column.include?(["X", "X", "X", "X"])
+            return true if column.include?(["O", "O", "O", "O"])
+        end
+
+        return false
+    end 
+    
+    def row_win?
 
     end
     
+    def diagonal_win?
+
+    end    
+
     def display_board
         board = <<~BOARD
 

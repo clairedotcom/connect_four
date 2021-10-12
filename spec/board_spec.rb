@@ -14,15 +14,14 @@ describe Board do
                 expect(board[move - 1]).to include(marker)
             end    
         end
-
     end
 
-    describe '#game_over?' do
+    describe '#column_win?' do
         context 'when empty board is initialized' do
             subject(:board_win) { described_class.new}
             
             it 'returns false' do
-                expect(board_win.game_over?).to be false
+                expect(board_win.column_win?).to be false
             end
         end 
         
@@ -31,14 +30,16 @@ describe Board do
 
             before do
                 win = ["X","X","X","X"," "," "]
-                board_column.instance_variable_set(@board[0],board)
+                board_column.instance_variable_set(:@board[0], win)
             end
 
             it 'returns true' do
-                expect(board_column.game_over?).to be true
+                expect(board_column.column_win?).to be true
             end
         end
-        
+    end
+    
+    describe '#row_win?' do
         context 'when a player has four markers across four columns' do
             subject(:board_row) { described_class.new}
 
@@ -48,10 +49,12 @@ describe Board do
             end
             
             it 'returns true' do
-                expect(board_row.game_over?).to be true
+                expect(board_row.row_win?).to be true
             end
         end
-        
+    end
+    
+    describe '#diagonal_win?' do   
         context 'when a player has a diagonal four in a row' do
             subject(:board_diagonal) { described_class.new}
 
@@ -60,7 +63,7 @@ describe Board do
             end
             
             it 'returns true' do
-                expect(board_diagonal.game_over?).to be true
+                expect(board_diagonal.diagonal_win?).to be true
             end
         end
     end 
