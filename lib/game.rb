@@ -12,7 +12,7 @@ class Game
     def play
         intro
         set_first_player
-        #turn until game_over?
+        turn until @board.game_over?
     end
 
     def set_first_player

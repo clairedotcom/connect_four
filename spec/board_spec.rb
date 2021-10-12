@@ -2,27 +2,21 @@ require_relative '../lib/board.rb'
 require_relative '../lib/game.rb'
 
 describe Board do
-    #initialize board with as a hash for each column
-    # {1 => nil
-    #  2 => nil
-    #  3 => nil etc}
-
-    #method to update the board
     describe '#update_board' do
         context 'when a move is passed as an argument' do
             subject(:board_update) { described_class.new}
 
-            it 'adds the marker to the value corresponding to the move key' do
+            it 'adds the marker to the column' do
                 move = 3
                 marker = "X"
+                board_update.update_board(move, marker)
                 board = board_update.instance_variable_get(:@board)
-                expect {board_update.update_board(move, marker)}.to change {board.values_at(3).length}.by(1)
+                expect(board[move - 1]).to include(marker)
             end    
         end
 
     end
 
-    #method to check if there are four in a row"
     describe '#game_over?' do
         context 'when empty board is initialized' do
             subject(:board_win) { described_class.new}
@@ -36,8 +30,8 @@ describe Board do
             subject(:board_column) { described_class.new}
 
             before do
-                board = {1 => ["X","X","X","X"]}
-                board_column.instance_variable_set(@board,board)
+                win = ["X","X","X","X"," "," "]
+                board_column.instance_variable_set(@board[0],board)
             end
 
             it 'returns true' do
@@ -71,7 +65,6 @@ describe Board do
         end
     end 
     
-    #method to check if board is full
     describe '#board_full?' do
 
         subject(:full_board) { described_class.new}

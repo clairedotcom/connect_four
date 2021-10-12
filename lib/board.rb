@@ -2,11 +2,18 @@ class Board
     attr_accessor :board
 
     def initialize
-        @board = Array.new(7, Array.new(6,"-"))
+        @board = Array.new(7) {Array.new(6, " ")}
     end 
     
     def update_board(move, marker)
+        column = @board[move - 1]
 
+        column.each_with_index do |row, index|
+            if row == " "
+                column[index] = marker
+                break
+            end
+        end
     end
     
     def game_over?
