@@ -29,8 +29,8 @@ describe Board do
             subject(:board_column) { described_class.new}
 
             before do
-                win = ["X","X","X","X"," "," "]
-                board_column.instance_variable_set(:@board[0], win)
+                win = [["X","X","X","X"," "," "],[" "," "," "," "," "," "],[" "," "," "," "," "," "],[" "," "," "," "," "," "],[" "," "," "," "," "," "],[" "," "," "," "," "," "],[" "," "," "," "," "," "]]
+                board_column.instance_variable_set(:@board, win)
             end
 
             it 'returns true' do
@@ -44,8 +44,8 @@ describe Board do
             subject(:board_row) { described_class.new}
 
             before do
-                board = {1 => ["X"], 2 => ["X"], 3 => ["X"], 4 => ["X"]}
-                board_row.instance_variable_set(@board, board)
+                win = [["X"," "," "," "," "," "],["X"," "," "," "," "," "],["X"," "," "," "," "," "],["X"," "," "," "," "," "],[" "," "," "," "," "," "],[" "," "," "," "," "," "],[" "," "," "," "," "," "]]
+                board_row.instance_variable_set(:@board, win)
             end
             
             it 'returns true' do
@@ -59,7 +59,8 @@ describe Board do
             subject(:board_diagonal) { described_class.new}
 
             before do
-                board = {1 => ["X"], 2 => ["O", "X"], 3 => ["O","O","X"], 4 => ["O","O","O","X"]}
+                win = [["X"," "," "," "," "," "],[" ","X"," "," "," "," "],[" "," ","X"," "," "," "],[" "," "," ","X"," "," "],[" "," "," "," "," "," "],[" "," "," "," "," "," "],[" "," "," "," "," "," "]]
+                board_diagonal.instance_variable_set(:@board, win)
             end
             
             it 'returns true' do
@@ -73,6 +74,11 @@ describe Board do
         subject(:full_board) { described_class.new}
 
         context 'when all columns are full' do
+            before do
+                full = [["X","X","X","X","X","X"],["X","X","X","X","X","X"],["X","X","X","X","X","X"],["X","X","X","X","X","X"],["X","X","X","X","X","X"],["X","X","X","X","X","X"],["X","X","X","X","X","X"]]
+                full_board.instance_variable_set(:@board, full)
+            end    
+            
             it 'returns true' do
                 expect(full_board.board_full?).to be true
             end
@@ -81,6 +87,11 @@ describe Board do
         subject(:not_full_board) { described_class.new}
 
         context 'when there are still moves available' do
+            before do
+                not_full = [[" ","X","X","X","X","X"],["X","X","X","X","X","X"],["X","X","X","X","X","X"],["X","X","X","X","X","X"],["X","X","X","X","X","X"],["X","X","X","X","X"," "]]
+                not_full_board.instance_variable_set(:@board, not_full)
+            end    
+
             it 'returns false' do
                 expect(not_full_board.board_full?).to be false
             end

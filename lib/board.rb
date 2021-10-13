@@ -21,20 +21,41 @@ class Board
     end
 
     def column_win?
-        @board.each do |column|
-            return true if column.include?(["X", "X", "X", "X"])
-            return true if column.include?(["O", "O", "O", "O"])
+        @board.each_with_index do |column, x|
+            column.each_with_index do |square, y|
+                return false if column.all?(" ")
+                return true if square == @board[x][y+1] && square == @board[x][y+2] && square == @board[x][y+3]
+            end
         end
-
-        return false
+        false
     end 
     
     def row_win?
-
+        @board.each_with_index do |column, x|
+            column.each_with_index do |square, y|
+                return false if column.all?(" ")
+                return true if square == @board[x+1][y] && square == @board[x+2][y] && square == @board[x+3][y]
+            end
+        end
+        false
     end
     
     def diagonal_win?
-
+        @board.each_with_index do |column, x|
+            column.each_with_index do |square, y|
+                return false if column.all?(" ")
+                return true if square == @board[x+1][y+1] && square == @board[x+2][y+2] && square == @board[x+3][y+3]
+                return true if square == @board[x-1][y-1] && square == @board[x-2][y-2] && square == @board[x-3][y-3]
+            end
+        end
+        false
+    end
+    
+    def board_full?
+        @board.each do |column|
+            return false if column.include?(" ")
+        end
+        true     
     end    
 
     def display_board
