@@ -12,7 +12,9 @@ class Game
     def play
         intro
         set_first_player
-        turn until @board.game_over?
+        @board.display_board
+        turn until @board.game_over? || @board.board_full?
+        draw if @board.board_full?
     end
 
     def set_first_player
@@ -35,10 +37,13 @@ class Game
         move = computer_move if @current_player == @computer
         add_move(move)
         @board.display_board
+        winner if @board.game_over?
         switch_players
     end
     
     def user_move
+        puts "Please enter your move: "
+        
         loop do
             input = gets.chomp
             return input if input.to_i < 8 && input.to_i > 0
@@ -57,7 +62,7 @@ class Game
     
     def switch_players
         @current_player == @user ? @current_player = @computer : @current_player = @user
-    end   
+    end 
     
     private
 
@@ -65,5 +70,13 @@ class Game
         puts 'C O N N E C T  F O U R'
         puts 'Play against the computer to get four in a row'
         puts 'Would you like to go first? Enter y or n: '
+    end
+    
+    def draw
+        puts "It's a draw! Please play again."
+    end
+    
+    def winner
+        puts "#{@current_player.name} wins! Game over."
     end    
 end    

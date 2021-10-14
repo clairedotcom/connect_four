@@ -6,7 +6,7 @@ class Board
     end 
     
     def update_board(move, marker)
-        column = @board[move - 1]
+        column = @board[move.to_i - 1]
 
         column.each_with_index do |row, index|
             if row == " "
@@ -17,38 +17,50 @@ class Board
     end
     
     def game_over?
-        true if column_win? || row_win? || diagonal_win?
+        return true if column_win? || row_win? || diagonal_win?
     end
 
     def column_win?
+        win = false
+        
         @board.each_with_index do |column, x|
             column.each_with_index do |square, y|
-                return false if column.all?(" ")
-                return true if square == @board[x][y+1] && square == @board[x][y+2] && square == @board[x][y+3]
+                if square != " "
+                    win = true if square == @board[x][y+1] && square == @board[x][y+2] && square == @board[x][y+3]
+                end
             end
+            break if win
         end
-        false
+        win
     end 
     
     def row_win?
+        win = false
+
         @board.each_with_index do |column, x|
             column.each_with_index do |square, y|
-                return false if column.all?(" ")
-                return true if square == @board[x+1][y] && square == @board[x+2][y] && square == @board[x+3][y]
+                if square != " " && !(@board[x+1].nil?) && !(@board[x+2].nil?)
+                    win = true if square == @board[x+1][y] && square == @board[x+2][y] && square == @board[x+3][y]
+                end
             end
+            break if win   
         end
-        false
+        win
     end
     
     def diagonal_win?
+        win = false
+
         @board.each_with_index do |column, x|
             column.each_with_index do |square, y|
-                return false if column.all?(" ")
-                return true if square == @board[x+1][y+1] && square == @board[x+2][y+2] && square == @board[x+3][y+3]
-                return true if square == @board[x-1][y-1] && square == @board[x-2][y-2] && square == @board[x-3][y-3]
+                if square != " " && !(@board[x+1].nil?) && !(@board[x+2].nil?)
+                    win = true if square == @board[x+1][y+1] && square == @board[x+2][y+2] && square == @board[x+3][y+3]
+                    win = true if square == @board[x+1][y-1] && square == @board[x+2][y-2] && square == @board[x+3][y-3]
+                end
             end
+            break if win
         end
-        false
+        win
     end
     
     def board_full?
@@ -67,6 +79,7 @@ class Board
         | #{@board[0][2]} | #{@board[1][2]} | #{@board[2][2]} | #{@board[3][2]} | #{@board[4][2]} | #{@board[5][2]} | #{@board[6][2]} |
         | #{@board[0][1]} | #{@board[1][1]} | #{@board[2][1]} | #{@board[3][1]} | #{@board[4][1]} | #{@board[5][1]} | #{@board[6][1]} |
         | #{@board[0][0]} | #{@board[1][0]} | #{@board[2][0]} | #{@board[3][0]} | #{@board[4][0]} | #{@board[5][0]} | #{@board[6][0]} |
+        -----------------------------
         | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
 
         BOARD
