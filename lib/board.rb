@@ -1,77 +1,77 @@
 class Board
-    attr_accessor :board
+  attr_accessor :board
 
-    def initialize
-        @board = Array.new(7) {Array.new(6, " ")}
-    end 
-    
-    def update_board(move, marker)
-        column = @board[move.to_i - 1]
+  def initialize
+    @board = Array.new(7) { Array.new(6, ' ') }
+  end
 
-        column.each_with_index do |row, index|
-            if row == " "
-                column[index] = marker
-                break
-            end
-        end
+  def update_board(move, marker)
+    column = @board[move.to_i - 1]
+
+    column.each_with_index do |row, index|
+      if row == ' '
+        column[index] = marker
+        break
+      end
     end
-    
-    def game_over?
-        return true if column_win? || row_win? || diagonal_win?
+  end
+
+  def game_over?
+    return true if column_win? || row_win? || diagonal_win?
+  end
+
+  def column_win?
+    win = false
+
+    @board.each_with_index do |column, x|
+      column.each_with_index do |square, y|
+        if square != ' '
+          win = true if square == @board[x][y + 1] && square == @board[x][y + 2] && square == @board[x][y + 3]
+        end
+      end
+      break if win
     end
+    win
+  end
 
-    def column_win?
-        win = false
-        
-        @board.each_with_index do |column, x|
-            column.each_with_index do |square, y|
-                if square != " "
-                    win = true if square == @board[x][y+1] && square == @board[x][y+2] && square == @board[x][y+3]
-                end
-            end
-            break if win
-        end
-        win
-    end 
-    
-    def row_win?
-        win = false
+  def row_win?
+    win = false
 
-        @board.each_with_index do |column, x|
-            column.each_with_index do |square, y|
-                if square != " " && !(@board[x+1].nil?) && !(@board[x+2].nil?)
-                    win = true if square == @board[x+1][y] && square == @board[x+2][y] && square == @board[x+3][y]
-                end
-            end
-            break if win   
+    @board.each_with_index do |column, x|
+      column.each_with_index do |square, y|
+        if square != ' ' && !@board[x + 1].nil? && !@board[x + 2].nil?
+          win = true if square == @board[x + 1][y] && square == @board[x + 2][y] && square == @board[x + 3][y]
         end
-        win
+      end
+      break if win
     end
-    
-    def diagonal_win?
-        win = false
+    win
+  end
 
-        @board.each_with_index do |column, x|
-            column.each_with_index do |square, y|
-                if square != " " && !(@board[x+1].nil?) && !(@board[x+2].nil?)
-                    win = true if square == @board[x+1][y+1] && square == @board[x+2][y+2] && square == @board[x+3][y+3]
-                    win = true if square == @board[x+1][y-1] && square == @board[x+2][y-2] && square == @board[x+3][y-3]
-                end
-            end
-            break if win
+  def diagonal_win?
+    win = false
+
+    @board.each_with_index do |column, x|
+      column.each_with_index do |square, y|
+        if square != ' ' && !@board[x + 1].nil? && !@board[x + 2].nil?
+          win = true if square == @board[x + 1][y + 1] && square == @board[x + 2][y + 2] && square == @board[x + 3][y + 3]
+          win = true if square == @board[x + 1][y - 1] && square == @board[x + 2][y - 2] && square == @board[x + 3][y - 3]
         end
-        win
+      end
+      break if win
     end
-    
-    def board_full?
-        @board.each do |column|
-            return false if column.include?(" ")
-        end
-        true     
-    end    
+    win
+  end
 
-    def display_board
-        board = <<~BOARD
+  def board_full?
+    @board.each do |column|
+      return false if column.include?(' ')
+    end
+    true
+  end
+
+  def display_board
+    board = <<~BOARD
 
         | #{@board[0][5]} | #{@board[1][5]} | #{@board[2][5]} | #{@board[3][5]} | #{@board[4][5]} | #{@board[5][5]} | #{@board[6][5]} |
         | #{@board[0][4]} | #{@board[1][4]} | #{@board[2][4]} | #{@board[3][4]} | #{@board[4][4]} | #{@board[5][4]} | #{@board[6][4]} |
@@ -82,8 +82,8 @@ class Board
         -----------------------------
         | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
 
-        BOARD
+    BOARD
 
-        puts board
-    end
-end    
+    puts board
+  end
+end
