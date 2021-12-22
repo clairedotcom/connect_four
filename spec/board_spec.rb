@@ -57,6 +57,22 @@ describe Board do
         expect(board_row.row_win?).to be true
       end
     end
+
+    context 'when a player has three in a row at the edge of the board' do
+      subject(:board_edge) { described_class.new }
+
+      before do
+        edge_case = Array.new(7) { Array.new(6, ' ') }
+        edge_case[4][0] = 'X'
+        edge_case[5][0] = 'X'
+        edge_case[6][0] = 'X'
+        board_edge.instance_variable_set(:@board, edge_case)
+      end
+
+      it 'returns false' do
+        expect(board_edge.row_win?).to be false
+      end
+    end
   end
 
   describe '#diagonal_win?' do
@@ -103,6 +119,25 @@ describe Board do
 
       it 'returns false' do
         expect(not_full_board.board_full?).to be false
+      end
+    end
+  end
+
+  describe '#off_board' do
+    subject(:test_board) { described_class.new }
+    context 'when passed a position on the board' do
+      it 'returns false' do
+        x = 3
+        y = 4
+        expect(test_board.off_board?(x, y)).to be false
+      end
+    end
+
+    context 'when passed a position off the board' do
+      it 'returns true' do
+        x = 8
+        y = 3
+        expect(test_board.off_board?(x, y)).to be true
       end
     end
   end
