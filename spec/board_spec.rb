@@ -17,17 +17,15 @@ describe Board do
   end
 
   describe '#column_win?' do
-    context 'when empty board is initialized' do
-      subject(:board_win) { described_class.new }
+    subject(:board_column) { described_class.new }
 
+    context 'when empty board is initialized' do
       it 'returns false' do
-        expect(board_win.column_win?).to be false
+        expect(board_column.column_win?).to be false
       end
     end
 
     context 'when a player has four markers in the same column' do
-      subject(:board_column) { described_class.new }
-
       before do
         win = Array.new(7) { Array.new(6, ' ') }
         win[1] = ['X', 'X', 'X', 'X', ' ', ' ']
@@ -36,6 +34,18 @@ describe Board do
 
       it 'returns true' do
         expect(board_column.column_win?).to be true
+      end
+    end
+
+    context 'when a player has three in a row at the edge of the board' do
+      before do
+        win = Array.new(7) { Array.new(6, ' ') }
+        win[1] = [' ', ' ', ' ', 'O', 'O', 'O']
+        board_column.instance_variable_set(:@board, win)
+      end
+
+      it 'returns false' do
+        expect(board_column.column_win?).to be false
       end
     end
   end
@@ -76,9 +86,9 @@ describe Board do
   end
 
   describe '#diagonal_win?' do
-    context 'when a player has a diagonal four in a row' do
-      subject(:board_diagonal) { described_class.new }
+    subject(:board_diagonal) { described_class.new }
 
+    context 'when a player has a diagonal four in a row' do
       before do
         win = Array.new(7) { Array.new(6, ' ') }
         win[0][0] = 'X'
@@ -90,6 +100,19 @@ describe Board do
 
       it 'returns true' do
         expect(board_diagonal.diagonal_win?).to be true
+      end
+    end
+
+    context 'when a player has three in a row at the edge of the board' do
+      before do
+        edge = Array.new(7) { Array.new(6, ' ') }
+        edge[6][5] = 'O'
+        edge[5][4] = 'O'
+        edge[4][3] = 'O'
+      end
+
+      it 'returns false' do
+        expect(board_diagonal.diagonal_win?).to be false
       end
     end
   end
