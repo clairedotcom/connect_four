@@ -36,10 +36,11 @@ class Board
 
   def row_win?
     win = false
-
     @board.each_with_index do |column, x|
       column.each_with_index do |square, y|
-        if square != ' ' && !@board[x + 1].nil? && !@board[x + 2].nil?
+        next if off_board?(x + 1, y) || off_board?(x + 2, y) || off_board?(x + 3, y)
+
+        unless square == ' '
           win = true if square == @board[x + 1][y] && square == @board[x + 2][y] && square == @board[x + 3][y]
         end
       end
@@ -67,6 +68,12 @@ class Board
     @board.each do |column|
       return false if column.include?(' ')
     end
+    true
+  end
+
+  def off_board?(x_row, y_col)
+    return false if [0, 1, 2, 3, 4, 5, 6].include?(x_row) && [0, 1, 2, 3, 4, 5].include?(y_col)
+
     true
   end
 
